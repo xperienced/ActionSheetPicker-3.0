@@ -31,21 +31,20 @@
         <hr>
 
         <section id="main_content">
-          <p>Since the main repo not updated for a year:</p>
+          <p>Since the <a href="https://github.com/TimCinel/ActionSheetPicker">Tim's repo</a> is outdated, I forked from this repo and implement a bunch of UI fixes, crush-fixes and different customisation abilites.</p>
 
-<p>I'm gonna go build my own <strong>ActionSheetPicker</strong>, with blackjack and hookers. (c)</p>
+<p>I try to resolve a lot of pull requests and issues in Tim's repo by time, but new updates will be added here.</p>
 
 <p><code>pod 'ActionSheetPicker-3.0', '~&gt; 1.0.9'</code></p>
 
-<p>New ActionSheetPicker, with fix crashes, new pickers and additions.
-I merge most of all fixes to TimCinel's branch already.</p>
+<p>Please welcome: <strong>ActionSheetPicker-3.0</strong>, with fix crashes, new pickers and additions!</p>
 
-<p>Bug reports, feature requests, patches, well-wishes, and rap demo tapes are always welcome.</p>
+<p><em>Bug reports, feature requests, patches, well-wishes, and rap demo tapes are always welcome.</em></p>
 
 <p><em>Regards, Petr Korolev</em></p>
 
-<h1>
-<a name="actionsheetpicker--uipickerview--uiactionsheet" class="anchor" href="#actionsheetpicker--uipickerview--uiactionsheet"><span class="octicon octicon-link"></span></a>ActionSheetPicker = UIPickerView + UIActionSheet</h1>
+<h2>
+<a name="actionsheetpicker--uipickerview--uiactionsheet" class="anchor" href="#actionsheetpicker--uipickerview--uiactionsheet"><span class="octicon octicon-link"></span></a>ActionSheetPicker = UIPickerView + UIActionSheet</h2>
 
 <p>Well, that's how it started. Now, the following is more accurate:</p>
 
@@ -55,8 +54,7 @@ I merge most of all fixes to TimCinel's branch already.</p>
 </ul><h2>
 <a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
 
-<p>ActionSheetPicker
-<a href="https://github.com/TimCinel/ActionSheetPicker">https://github.com/TimCinel/ActionSheetPicker</a></p>
+<p>ActionSheetPicker</p>
 
 <p>Easily present an ActionSheet with a PickerView, allowing user to select from a number of immutable options. Based on the HTML drop-down alternative found in mobilesafari.</p>
 
@@ -121,6 +119,16 @@ not required. Just provide a target/action callback.</li>
 <p><img src="Screenshots/string.png" alt="ActionSheetPicker" title="ActionSheetPicker"><img src="Screenshots/date.png" alt="ActionSheetDatePicker" title="ActionSheetDatePicker"><img src="Screenshots/distance.png" alt="ActionSheetDistancePicker" title="ActionSheetDistancePicker"><img src="Screenshots/ipad.png" alt="iPad Support" title="iPad Support"></p>
 
 <h2>
+<a name="actionsheetcustompicker-customization" class="anchor" href="#actionsheetcustompicker-customization"><span class="octicon octicon-link"></span></a>ActionSheetCustomPicker Customization</h2>
+
+<p>ActionSheetCustomPicker provides the following delegate function that can be used for customization:</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">actionSheetPicker:</span><span class="p">(</span><span class="n">AbstractActionSheetPicker</span> <span class="o">*</span><span class="p">)</span><span class="nv">actionSheetPicker</span> <span class="nf">configurePickerView:</span><span class="p">(</span><span class="bp">UIPickerView</span> <span class="o">*</span><span class="p">)</span><span class="nv">pickerView</span><span class="p">;</span>
+</pre></div>
+
+<p>This method is called right before <code>actionSheetPicker</code> is presented and it can be used to customize the appearance and properties of the <code>actionSheetPicker</code> and the <code>pickerView</code> associated with it.</p>
+
+<h2>
 <a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
 
 <p>Thanks to all of the contributors for making ActionSheetPicker better for the iOS developer community. See AUTHORS for details.</p>
@@ -141,6 +149,8 @@ not required. Just provide a target/action callback.</li>
 <p><a href="http://github.com/grgcombs">Greg Combs</a> (Refactor!)</p>
 
 <p><a href="http://github.com/skywinder">Petr Korolev</a> (Update, crash-fix update for iOS7, new pickers)</p>
+
+<p><a href="http://github.com/NikDude">Nikos Mouzakitis</a></p>
 
 <h3>
 <a name="creator" class="anchor" href="#creator"><span class="octicon octicon-link"></span></a>Creator</h3>
