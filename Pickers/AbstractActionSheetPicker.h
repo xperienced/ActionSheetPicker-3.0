@@ -37,7 +37,10 @@
 @property (nonatomic, assign) BOOL hideCancel;
 @property (nonatomic, assign) CGRect presentFromRect;
 
-    // For subclasses.
+// Default is UIPopoverArrowDirectionAny
+@property(nonatomic) UIPopoverArrowDirection uiPopoverArrowDirection;
+
+// For subclasses.
 - (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin;
 
     // Present the ActionSheetPicker
