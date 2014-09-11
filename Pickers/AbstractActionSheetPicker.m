@@ -98,6 +98,7 @@ CG_INLINE BOOL isIPhone4()
         self.successAction = successAction;
         self.cancelAction = cancelActionOrNil;
         self.presentFromRect = CGRectZero;
+        self.uiPopoverArrowDirection = UIPopoverArrowDirectionAny;
 
         if ( [origin isKindOfClass:[UIBarButtonItem class]] )
             self.barButtonItem = origin;
@@ -480,14 +481,14 @@ CG_INLINE BOOL isIPhone4()
     NSParameterAssert(popover != NULL);
     if ( self.barButtonItem )
     {
-        [popover presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny
+        [popover presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:self.uiPopoverArrowDirection
                                         animated:YES];
         return;
     }
     else if ( (self.containerView) )
     {
         [popover presentPopoverFromRect:_containerView.bounds inView:_containerView
-               permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+               permittedArrowDirections:self.uiPopoverArrowDirection animated:YES];
         return;
     }
     // Unfortunately, things go to hell whenever you try to present a popover from a table view cell.  These are failsafes.
@@ -497,14 +498,14 @@ CG_INLINE BOOL isIPhone4()
     {
         origin = (_containerView.superview ? _containerView.superview : _containerView);
         presentRect = origin.bounds;
-        [popover presentPopoverFromRect:presentRect inView:origin permittedArrowDirections:UIPopoverArrowDirectionAny
+        [popover presentPopoverFromRect:presentRect inView:origin permittedArrowDirections:self.uiPopoverArrowDirection
                                animated:YES];
     }
     @catch (NSException *exception)
     {
         origin = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
         presentRect = CGRectMake(origin.center.x, origin.center.y, 1, 1);
-        [popover presentPopoverFromRect:presentRect inView:origin permittedArrowDirections:UIPopoverArrowDirectionAny
+        [popover presentPopoverFromRect:presentRect inView:origin permittedArrowDirections:self.uiPopoverArrowDirection
                                animated:YES];
     }
 }
