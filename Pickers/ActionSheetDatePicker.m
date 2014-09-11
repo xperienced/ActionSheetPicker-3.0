@@ -46,8 +46,15 @@
     return picker;
 }
 
-- (id)initWithTitle:(NSString *)title datePickerMode:(UIDatePickerMode)datePickerMode selectedDate:(NSDate *)selectedDate target:(id)target action:(SEL)action origin:(id)origin {
-    self = [super initWithTarget:target successAction:action cancelAction:nil origin:origin];
+- (id)initWithTitle:(NSString *)title datePickerMode:(UIDatePickerMode)datePickerMode selectedDate:(NSDate *)selectedDate target:(id)target action:(SEL)action origin:(id)origin
+{
+    self = [self initWithTitle:title datePickerMode:datePickerMode selectedDate:selectedDate target:target action:action origin:origin cancelAction:nil];
+    return self;
+}
+
+- (id)initWithTitle:(NSString *)title datePickerMode:(UIDatePickerMode)datePickerMode selectedDate:(NSDate *)selectedDate target:(id)target action:(SEL)action origin:(id)origin cancelAction:(SEL)cancelAction
+{
+    self = [super initWithTarget:target successAction:action cancelAction:cancelAction origin:origin];
     if (self) {
         self.title = title;
         self.datePickerMode = datePickerMode;
@@ -100,7 +107,7 @@
     NSAssert((index >= 0 && index < self.customButtons.count), @"Bad custom button tag: %zd, custom button count: %zd", index, self.customButtons.count);    
     NSAssert([self.pickerView respondsToSelector:@selector(setDate:animated:)], @"Bad pickerView for ActionSheetDatePicker, doesn't respond to setDate:animated:");
     NSDictionary *buttonDetails = (self.customButtons)[(NSUInteger) index];
-    NSDate *itemValue = buttonDetails[@"buttonValue"];
+    NSDate *itemValue = buttonDetails[kButtonValue];
     UIDatePicker *picker = (UIDatePicker *)self.pickerView;    
     [picker setDate:itemValue animated:YES];
     [self eventForDatePicker:picker];

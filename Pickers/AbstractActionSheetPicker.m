@@ -30,7 +30,7 @@
 #import <objc/message.h>
 #import <sys/utsname.h>
 
-BOOL isIPhone4()
+CG_INLINE BOOL isIPhone4()
 {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -108,13 +108,14 @@ BOOL isIPhone4()
         else
             NSAssert(NO, @"Invalid origin provided to ActionSheetPicker ( %@ )", origin);
 
+        UIBarButtonItem *sysDoneButton = [self createButtonWithType:UIBarButtonSystemItemDone target:self
+                                                             action:@selector(actionPickerDone:)];
 
-        // Implement custom Cancel and Done Button (not System as before) due  #22 issue (https://github.com/skywinder/ActionSheetPicker-3.0/issues/22)
-        // Initialize default bar buttons so they can be overridden before the 'showActionSheetPicker' is called
-        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(actionPickerCancel:)];
-        [self setCancelBarButtonItem:cancelBtn];
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(actionPickerDone:)];
-        [self setDoneBarButtonItem:doneButton];
+        UIBarButtonItem *sysCancelButton = [self createButtonWithType:UIBarButtonSystemItemCancel target:self
+                                                               action:@selector(actionPickerCancel:)];
+
+        [self setCancelBarButtonItem:sysCancelButton];
+        [self setDoneBarButtonItem:sysDoneButton];
 
         //allows us to use this without needing to store a reference in calling class
         self.selfReference = self;
@@ -179,10 +180,10 @@ BOOL isIPhone4()
         UIToolbar *leftEdge = [[UIToolbar alloc] initWithFrame:f];
         f.origin.x = masterView.frame.size.width - 8;
         UIToolbar *rightEdge = [[UIToolbar alloc] initWithFrame:f];
-//#pragma clang diagnostic push
-//#pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
         leftEdge.barTintColor = rightEdge.barTintColor = self.toolbar.barTintColor;
-//#pragma clang diagnostic pop
+#pragma clang diagnostic pop
         [masterView insertSubview:leftEdge atIndex:0];
         [masterView insertSubview:rightEdge atIndex:0];
     }
@@ -231,8 +232,8 @@ BOOL isIPhone4()
     if ( !value )
         value = @0;
     NSDictionary *buttonDetails = @{
-            @"buttonTitle" : title,
-            @"buttonValue" : value
+            kButtonTitle : title,
+            kButtonValue : value
     };
     [self.customButtons addObject:buttonDetails];
 }
@@ -246,7 +247,7 @@ BOOL isIPhone4()
             selector(selectRow:inComponent:animated:)], @"customButtonPressed not overridden, cannot interact with subclassed pickerView");
     NSDictionary *buttonDetails = (self.customButtons)[(NSUInteger) index];
     NSAssert(buttonDetails != NULL, @"Custom button dictionary is invalid");
-    NSInteger buttonValue = [buttonDetails[@"buttonValue"] intValue];
+    NSInteger buttonValue = [buttonDetails[kButtonValue] intValue];
     UIPickerView *picker = (UIPickerView *) self.pickerView;
     NSAssert(picker != NULL, @"PickerView is invalid");
     [picker selectRow:buttonValue inComponent:0 animated:YES];
@@ -309,8 +310,7 @@ BOOL isIPhone4()
     NSInteger index = 0;
     for (NSDictionary *buttonDetails in self.customButtons)
     {
-        NSString *buttonTitle = buttonDetails[@"buttonTitle"];
-        //NSInteger buttonValue = [[buttonDetails objectForKey:@"buttonValue"] intValue];
+        NSString *buttonTitle = buttonDetails[kButtonTitle];
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered
                                                                   target:self action:@selector(customButtonPressed:)];
         button.tag = index;
@@ -374,14 +374,6 @@ BOOL isIPhone4()
 
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:type target:target
                                                                                action:buttonAction];
-
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
-    if ( NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1 )
-        [barButton setTintColor:[[UIApplication sharedApplication] keyWindow].tintColor];
-#pragma clang diagnostic pop
-
     return barButton;
 }
 
@@ -391,9 +383,7 @@ BOOL isIPhone4()
 {
     if ( IS_IPAD )
     {
-        if ( [self isViewPortrait] )
-            return CGSizeMake(320 , 480);
-        return CGSizeMake(480, 320);
+        return CGSizeMake(320, 320);
     }
 
     if ( [self isViewPortrait] )
@@ -483,6 +473,7 @@ BOOL isIPhone4()
     }
 
     _popOverController = [[UIPopoverController alloc] initWithContentViewController:viewController];
+    _popOverController.delegate = self;
     [self presentPopover:_popOverController];
 }
 
@@ -518,6 +509,12 @@ BOOL isIPhone4()
         [popover presentPopoverFromRect:presentRect inView:origin permittedArrowDirections:self.uiPopoverArrowDirection
                                animated:YES];
     }
+}
+
+#pragma mark - Popoverdelegate
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    [self notifyTarget:self.target didCancelWithAction:self.cancelAction origin:[self storedOrigin]];
 }
 
 
