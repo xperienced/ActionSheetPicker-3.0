@@ -153,6 +153,9 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)popBack:(id)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES] ;
+}
 - (IBAction)selectAnAnimal:(UIControl *)sender {
     [ActionSheetStringPicker showPickerWithTitle:@"Select Animal" rows:self.animals initialSelection:self.selectedIndex target:self successAction:@selector(animalWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:sender];
 
